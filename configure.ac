@@ -74,7 +74,8 @@ PKG_PROG_PKG_CONFIG
 
 # modules we require
 PKG_CHECK_MODULES(LIBESTR, libestr >= 0.1.9)
-PKG_CHECK_MODULES([JSON_C], [libfastjson >= 0.99.3],,)
+
+PKG_CHECK_MODULES([LIBFASTJSON], [libfastjson >= 0.99.3],,)
 
 AC_DEFINE_UNQUOTED([PLATFORM_ID], ["${host}"], [platform id for display purposes])
 # we don't mind if we don't have the lsb_release utility. But if we have, it's
@@ -923,7 +924,7 @@ if test "x$enable_rsyslogrt" = "xyes"; then
   RSRT_LIBS1="\$(top_builddir)/runtime/librsyslog.la"
 fi
 AM_CONDITIONAL(ENABLE_RSYSLOGRT, test x$enable_rsyslogrt = xyes)
-RSRT_CFLAGS="\$(RSRT_CFLAGS1) \$(LIBESTR_CFLAGS) \$(JSON_C_CFLAGS)"
+RSRT_CFLAGS="\$(RSRT_CFLAGS1) \$(LIBESTR_CFLAGS) \$(LIBFASTJSON_CFLAGS)"
 if test "$GCC" = "yes"; then
   RSRT_CFLAGS="$RSRT_CFLAGS -W -Wall -Wformat-security -Wshadow -Wcast-align -Wpointer-arith -Wmissing-format-attribute"
   if $CC -Werror=implicit-function-declaration -x c -c /dev/null -o /dev/null 2>/dev/null; then
@@ -937,7 +938,7 @@ if test "$GCC" = "yes"; then
   fi
 fi
 RSRT_CFLAGS="$RSRT_CFLAGS $WARN_CFLAGS"
-RSRT_LIBS="\$(RSRT_LIBS1) \$(LIBESTR_LIBS) \$(JSON_C_LIBS)"
+RSRT_LIBS="\$(RSRT_LIBS1) \$(LIBESTR_LIBS) \$(LIBFASTJSON_LIBS)"
 AC_SUBST(RSRT_CFLAGS1)
 AC_SUBST(RSRT_LIBS1)
 AC_SUBST(RSRT_CFLAGS)
@@ -1695,12 +1696,14 @@ AM_CONDITIONAL(ENABLE_KAFKA_TESTS, test x$enable_kafka_tests = xyes)
 
 # omkafka works with older library
 if test "x$enable_omkafka" = "xyes"; then
-	PKG_CHECK_MODULES([LIBRDKAFKA], [librdkafka],, [
-		AC_CHECK_LIB([rdkafka], [rd_kafka_produce], [
-			AC_MSG_WARN([librdkafka is missing but library present, using -lrdkafka])
-			LIBRDKAFKA_LIBS=-lrdkafka
-		], [
-			AC_MSG_ERROR([could not find rdkafka library])
+	PKG_CHECK_MODULES([LIBRDKAFKA], [rdkafka],, [
+		PKG_CHECK_MODULES([LIBRDKAFKA], [librdkafka],, [
+			AC_CHECK_LIB([rdkafka], [rd_kafka_produce], [
+				AC_MSG_WARN([librdkafka is missing but library present, using -lrdkafka])
+				LIBRDKAFKA_LIBS=-lrdkafka
+			], [
+				AC_MSG_ERROR([could not find rdkafka library])
+			])
 		])
 	])
 	AC_CHECK_HEADERS([librdkafka/rdkafka.h])
@@ -1708,12 +1711,13 @@ fi
 
 # imkafka needs newer library
 if test "x$enable_imkafka" = "xyes"; then
-	PKG_CHECK_MODULES(LIBRDKAFKA, rdkafka >= 0.9.1)
-	AC_CHECK_LIB([rdkafka], [rd_kafka_produce], [
-		AC_MSG_WARN([librdkafka is missing but library present, using -lrdkafka])
-		LIBRDKAFKA_LIBS=-lrdkafka
-	], [
-		AC_MSG_ERROR([could not find rdkafka library])
+	PKG_CHECK_MODULES([LIBRDKAFKA], [rdkafka >= 0.9.1],, [
+		AC_CHECK_LIB([rdkafka], [rd_kafka_produce], [
+			AC_MSG_WARN([librdkafka is missing but library present, using -lrdkafka])
+			LIBRDKAFKA_LIBS=-lrdkafka
+		], [
+			AC_MSG_ERROR([could not find rdkafka library])
+		])
 	])
 	AC_CHECK_HEADERS([librdkafka/rdkafka.h])
 fi
