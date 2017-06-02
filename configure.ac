@@ -1249,7 +1249,7 @@ AC_ARG_ENABLE(relp,
         [enable_relp=no]
 )
 if test "x$enable_relp" = "xyes"; then
-	PKG_CHECK_MODULES(RELP, relp >= 1.2.12)
+	PKG_CHECK_MODULES(RELP, relp >= 1.2.14)
 	AC_DEFINE([ENABLE_RELP], [1], [Indicator that RELP is present])
 fi
 AM_CONDITIONAL(ENABLE_RELP, test x$enable_relp = xyes)
@@ -2067,6 +2067,7 @@ AC_CONFIG_FILES([Makefile \
 		plugins/omelasticsearch/Makefile \
 		plugins/mmsnmptrapd/Makefile \
 		plugins/pmlastmsg/Makefile \
+		plugins/mmdblookup/Makefile \
 		contrib/pmsnare/Makefile \
 		contrib/pmpanngfw/Makefile \
 		contrib/pmaixforwardedfrom/Makefile \
@@ -2080,7 +2081,6 @@ AC_CONFIG_FILES([Makefile \
 		contrib/imzmq3/Makefile \
 		contrib/imczmq/Makefile \
 		contrib/mmsequence/Makefile \
-		contrib/mmdblookup/Makefile \
 		contrib/mmrfc5424addhmac/Makefile \
 		contrib/pmcisconames/Makefile \
 		contrib/omhttpfs/Makefile \

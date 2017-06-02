@@ -522,10 +522,13 @@ endif
 
 if ENABLE_MMDBLOOKUP
 TESTS += \
-    mmdb.sh
+    mmdb.sh \
+    mmdb-container.sh \
+    mmdb-container-empty.sh
 if HAVE_VALGRIND
 TESTS += \
-    mmdb-vg.sh
+    mmdb-vg.sh \
+    mmdb-multilevel-vg.sh
 endif
 endif
 
@@ -621,6 +624,8 @@ TESTS += \
 	imfile-endregex-timeout-polling.sh \
 	imfile-endregex-timeout.sh \
 	imfile-endregex-timeout-none.sh \
+	imfile-endregex-timeout-with-shutdown.sh \
+	imfile-endregex-timeout-with-shutdown-polling.sh \
 	imfile-persist-state-1.sh \
 	imfile-wildcards.sh \
 	imfile-wildcards-dirs.sh \
@@ -947,8 +952,10 @@ EXTRA_DIST= \
 	mmdb.sh \
 	mmdb.rb \
 	test.mmdb \
-	testsuites/mmdb.conf \
 	mmdb-vg.sh \
+	mmdb-container.sh \
+	mmdb-container-empty.sh \
+	mmdb-multilevel-vg.sh \
 	incltest.sh \
 	testsuites/incltest.conf \
 	incltest_dir.sh \
@@ -1220,6 +1227,8 @@ EXTRA_DIST= \
 	imfile-endregex-timeout-polling.sh \
 	imfile-endregex-timeout.sh \
 	imfile-endregex-timeout-none.sh \
+	imfile-endregex-timeout-with-shutdown.sh \
+	imfile-endregex-timeout-with-shutdown-polling.sh \
 	imfile-persist-state-1.sh \
 	imfile-truncate.sh \
 	imfile-wildcards.sh \
