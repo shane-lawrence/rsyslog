@@ -139,7 +139,6 @@ BEGINnewParserInst
 	struct cnfparamvals *pvals = NULL;
 	int i;
 CODESTARTnewParserInst
-	dbgprintf("pmsnare: Begin newParserInst\n");
 	DBGPRINTF("newParserInst (pmsnare)\n");
 	inst = NULL;
 	CHKiRet(createInstance(&inst));
@@ -182,7 +181,6 @@ CODESTARTnewParserInst
 	
 finalize_it:
 CODE_STD_FINALIZERnewParserInst
-	dbgprintf("pmsnare: Begin CODE_STD_FINALIZERnewParserInst\n");
 	if(lst != NULL)
 		cnfparamvalsDestruct(pvals, &parserpblk);
 	if(iRet != RS_RET_OK)
@@ -191,7 +189,6 @@ ENDnewParserInst
 
 BEGINfreeParserInst
 CODESTARTfreeParserInst
-	dbgprintf("pmsnare: Begin freeParserInst\n");
 	dbgprintf("pmsnare: free parser instance %p\n", pInst);
 ENDfreeParserInst
 
@@ -344,8 +341,7 @@ CODESTARTparse2
 		lenMsg--;
 		lenMsg -= (pInst->tabLength-1); /* size of tab goes from tabLength to 1, so shorten the message by the difference */
 		memmove(p2parse, p2parse+(pInst->tabLength-1), lenMsg); /* move the message portion up to overwrite the tab */ 
-		*(p2parse + lenMsg) = '\n';
-		*(p2parse + lenMsg + 1)	= '\0';
+		*(p2parse + lenMsg)	= '\0';
 		pMsg->iLenRawMsg -= (pInst->tabLength-1);
 		pMsg->iLenMSG -= (pInst->tabLength-1);
 		snaremessage -= (pInst->tabLength-1);
@@ -395,8 +391,7 @@ CODESTARTparse2
 		lenMsg--;
 		lenMsg -= (pInst->tabLength-1); /* size of tab goes from tabLength to 1, so shorten the message by the difference */
 		memmove(p2parse, p2parse+(pInst->tabLength-1), lenMsg); /* move the message portion up to overwrite the tab */ 
-		*(p2parse + lenMsg) = '\n';
-		*(p2parse + lenMsg + 1)	= '\0';
+		*(p2parse + lenMsg) = '\0';
 		pMsg->iLenRawMsg -= (pInst->tabLength-1);
 		pMsg->iLenMSG -= (pInst->tabLength-1);
 
